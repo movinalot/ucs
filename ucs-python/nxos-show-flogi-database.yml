@@ -1,0 +1,24 @@
+---
+connection:
+  hostname: 10.200.0.5
+  username: admin
+  password: C1sco12345
+commands:
+- command: 'terminal length 0'
+- command: 'connect nxos a'
+- command: 'show npv flogi-table'
+  sleep_time: 5
+  recv_buffer: 100000
+- command: 'show flogi database'
+  sleep_time: 5
+  recv_buffer: 100000
+- command: 'exit'
+- command: 'connect nxos b'
+- command: 'show npv flogi-table'
+  sleep_time: 5
+  recv_buffer: 100000
+- command: 'show database'
+  sleep_time: 5
+  recv_buffer: 100000
+- command: 'exit'
+- command: 'exit'
