@@ -16,11 +16,6 @@
   hosts: ucs
   connection: local
   gather_facts: no
-  #vars:
-  #  username: "{{username}}"
-  #  password: "{{password}}"
-  #  hostname: "{{hostname}}"
-  #  server_id: "{{server_id}}"
 
   tasks:
   - name: Get UCS auth token (cookie)
