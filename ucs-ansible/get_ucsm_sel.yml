@@ -18,7 +18,7 @@
   gather_facts: no
 
   tasks:
-  - name: Get UCS auth token (cookie)
+  - name: Login to UCS retrieve auth token (cookie)
     uri: 
       url: "http://{{hostname}}/nuova"
       method: POST
@@ -55,3 +55,17 @@
   - name: Show response
     debug:
         msg: "{{sel}}"
+
+  - name: Logout Out of UCS
+    uri: 
+      url: "http://{{hostname}}/nuova"
+      method: POST
+      return_content: yes
+      headers:
+        Content_type: "text/xml"
+      body: '<aaaLogout inCookie="{{cookie.matches.0.aaaLogin.outCookie}}" />'
+    register: logout
+
+  - name: Show logout
+    debug:
+        msg: "{{logout.content}}"
