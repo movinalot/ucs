@@ -8,7 +8,7 @@ import yaml
 def process_command(remote_conn, command, sleep_time=2, recv_buffer=10000):
     '''Process Command on Cisco UCS CLI'''
 
-    print(command, sleep_time)
+    #print(command, sleep_time)
     remote_conn.send(command+'\n')
     time.sleep(sleep_time)
 
@@ -54,4 +54,4 @@ if __name__ == '__main__':
 
     for command in commands['commands']:
         output = process_command(remote_conn, **command)
-        print(output)
+        print(output.decode('utf-8'))
