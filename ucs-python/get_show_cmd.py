@@ -1,3 +1,13 @@
+"""
+get_show_cmd.py
+
+Purpose:
+    Access UCSM CLI
+Author:
+    John McDonough (jomcdono@cisco.com) github: (@movinalot)
+    Cisco Systems, Inc.
+"""
+
 import time
 import json
 import os
