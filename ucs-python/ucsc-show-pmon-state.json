@@ -1,0 +1,14 @@
+{
+    "connection": {
+        "hostname": "10.200.0.150",
+        "username": "admin",
+        "password": "C1sco12345!"
+    },
+    "commands": [
+        {"command": "terminal length 0"},
+        {"command": "connect local-mgmt"},
+        {"command": "show pmon state", "sleep_time": 5, "recv_buffer": 100000},
+        {"command": "exit"},
+        {"command": "exit"}
+    ]
+}
