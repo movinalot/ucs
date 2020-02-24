@@ -1,0 +1,24 @@
+---
+#
+# Author: John McDonough (jomcdono@cisco.com)
+#         Cisco Systems, Inc.
+#
+# ucs_api.yml
+#
+# UCS Manager API request
+#
+
+- name: ucs_api:UCS api request
+  uri: 
+    url: "http://{{hostname}}/nuova"
+    method: "{{method_type}}"
+    return_content: yes
+    headers:
+      Content_type: "text/xml"
+    body: "{{body_xml}}"
+  register: response
+
+- name: ucs_api:response
+  debug:
+      msg: "{{response.content}}"
+  when: show_debug == True

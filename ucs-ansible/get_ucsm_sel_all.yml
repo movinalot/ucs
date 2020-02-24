@@ -1,0 +1,60 @@
+---
+#
+#
+# Author: John McDonough (jomcdono@cisco.com)
+#         Cisco Systems, Inc.
+#
+# get_ucsm_sel_all.yml
+#
+# This UCS Ansible playbook does not require UCS Ansible modules it works
+# purley with the Ansible uri and xml modules. A UCS token is retrived and
+# used in the header of successive GET requests to pull Server SEL logs
+# from UCS Manager.
+
+# GET UCS SEL
+- name: GET UCS SEL
+  hosts: ucs
+  connection: local
+  gather_facts: no
+  vars:
+    show_debug: True
+    all_server_ids: []
+    server_types:
+      - computeBlade
+      - computeRackUnit
+
+  tasks:
+  - name: Get UCS auth token (cookie)
+    include_tasks: ucs_login.yml
+
+  - name: Get UCS Server IDs
+    include_tasks: get_ucs_server_ids.yml
+    loop: "{{server_types}}"
+    loop_control:
+      loop_var:
+        server_type
+
+  - name: Get Server SEL
+    set_fact:
+      curr_server_id: "{{ item | regex_replace('/','-') }}"
+    loop: "{{all_server_ids}}"
+    loop_control:
+      label: "{{curr_server_id}}"
+
+#  - uri: 
+#      url: "http://{{hostname}}/ucsm/../operations/server-{{item}}/sel.txt"
+#      method: GET
+#      return_content: yes
+#      headers:
+#        Content_type: "text/xml"
+#        Cookie: 'ucsm-cookie="{{cookie.matches.0.aaaLogin.outCookie}}"'
+#    register: sel
+#    with_items: "{{server_ids}}"
+
+#\  - name: Show response
+#    debug:
+#        msg: "{{item.content}}"
+#    with_items: "{{sel.results}}"
+
+  - name: Get UCS auth token (cookie)
+    include_tasks: ucs_logout.yml

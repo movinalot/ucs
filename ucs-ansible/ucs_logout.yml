@@ -1,0 +1,34 @@
+---
+#
+# Author: John McDonough (jomcdono@cisco.com)
+#         Cisco Systems, Inc.
+#
+# ucs_logout.yml
+#
+# Logout from UCS Manager
+#
+
+- name: ucs_logout:logout from UCS
+  vars:
+    body_xml: '<aaaLogout inCookie="{{cookie}}" />'
+    method_type: POST
+  include_tasks: ucs_api.yml
+
+- name: ucs_logout:extract response attributes
+  xml:
+    xmlstring: "{{response.content}}"
+    xpath: /aaaLogout
+    content: attribute
+  register: response
+
+- name: ucs_logout:aaaLogout attribute extract response
+  debug:
+      msg: "{{response.matches}}"
+  when: show_debug == True
+
+- name: ucs_logout:set status
+  set_fact:
+    out_status: "{{response.matches.0.aaaLogout.outStatus}}"
+
+- name: ucs_login:Show status
+  debug: var=out_status

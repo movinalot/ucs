@@ -1,0 +1,35 @@
+---
+#
+# Author: John McDonough (jomcdono@cisco.com)
+#         Cisco Systems, Inc.
+#
+# ucs_login.yml
+#
+# Login to UCS Manager
+#
+
+- name: ucs_login:login to UCS
+  vars:
+    body_xml: '<aaaLogin inName="{{username}}" inPassword="{{password}}" />'
+    method_type: POST
+  include_tasks: ucs_api.yml
+
+- name: ucs_login:extract response attributes
+  xml:
+    xmlstring: "{{response.content}}"
+    xpath: /aaaLogin
+    content: attribute
+  register: response
+
+- name: ucs_login:aaaLogin attribute extract response
+  debug:
+      msg: "{{response.matches}}"
+  when: show_debug == True
+
+- name: ucs_login:set cookie variable
+  set_fact:
+    cookie: "{{response.matches.0.aaaLogin.outCookie}}"
+
+- name: ucs_login:Show cookie
+  debug: var=cookie
+  when: show_debug == True

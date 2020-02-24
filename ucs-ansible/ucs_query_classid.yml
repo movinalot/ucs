@@ -1,0 +1,15 @@
+---
+#
+# Author: John McDonough (jomcdono@cisco.com)
+#         Cisco Systems, Inc.
+#
+# ucs_query_classid.yml
+#
+# Query UCS Manager Class ID
+#
+
+- name: ucs_query_classid:Query UCS Manager Class ID "{{class_id}}"
+  vars:
+    body_xml: '<configResolveClass cookie="{{cookie}}" inHierarchical="false" classId="{{class_id}}"/>'
+    method_type: POST
+  include_tasks: ucs_api.yml

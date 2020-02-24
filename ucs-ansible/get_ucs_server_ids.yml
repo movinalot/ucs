@@ -1,0 +1,42 @@
+---
+#
+# Author: John McDonough (jomcdono@cisco.com)
+#         Cisco Systems, Inc.
+#
+# get_ucs_server_ids.yml
+#
+
+- name: query UCS classId "{{server_type}}"
+  vars:
+    class_id: "{{server_type}}"
+  include_tasks: ucs_query_classid.yml
+
+- name: Extract Server IDs
+  xml:
+    xmlstring: "{{response.content}}"
+    xpath: '/configResolveClass/outConfigs/{{server_type}}'
+    content: attribute
+  register: response
+
+- debug:
+    msg: "{{response}}"
+  when: show_debug == True
+
+- set_fact:
+    server_count: "{{response.matches | length}}"
+
+- name: Show server count
+  debug: var=server_count
+  when: show_debug == True
+
+- name: Build a list of all the server ids
+  set_fact:
+    all_server_ids: "{{ all_server_ids }} + [ '{{item[server_type].serverId}}' ]"
+  loop: "{{response.matches}}"
+  loop_control:
+    label: "{{item[server_type].dn}}"
+
+
+- name: Show all server ids
+  debug: var=all_server_ids
+  when: show_debug == True
