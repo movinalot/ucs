@@ -1,8 +1,17 @@
-""" Instantiate a UCS Service Profile from template and associate """
+"""
+create_ucs_sp_template.py
+
+Purpose:
+    UCS Manager Instantiate a UCS Service Profile from Template and Associate
+Author:
+    John McDonough (jomcdono@cisco.com) github: (@movinalot)
+    Cisco Systems, Inc.
+"""
 
 from ucsmsdk.ucshandle import UcsHandle
 from ucsmsdk.mometa.ls.LsBinding import LsBinding
 from ucsmsdk.mometa.ls.LsServer import LsServer
+from ucsmsdk.mometa.org.OrgOrg import OrgOrg
 
 HANDLE = UcsHandle(
     "sandbox-ucsm1.cisco.com",
@@ -11,6 +20,13 @@ HANDLE = UcsHandle(
 )
 
 HANDLE.login()
+
+ORG_ORG = OrgOrg(
+    parent_mo_or_dn='org-root',
+    name="devnet",
+)
+HANDLE.add_mo(ORG_ORG, modify_present=True)
+HANDLE.commit()
 
 SP_FROM_TEMPLATE = LsServer(
     parent_mo_or_dn='org-root/org-devnet',

@@ -1,4 +1,12 @@
-""" Create UCS Server Pool and associate to template """
+"""
+create_ucs_server_pool_populate_assign_to_sp_template.py
+
+Purpose:
+    UCS Manager Create UCS Server Pool and associate to template
+Author:
+    John McDonough (jomcdono@cisco.com) github: (@movinalot)
+    Cisco Systems, Inc.
+"""
 
 from ucsmsdk.ucshandle import UcsHandle
 from ucsmsdk.mometa.compute.ComputePool import ComputePool
@@ -16,18 +24,17 @@ SERVER_POOL = ComputePool(
     parent_mo_or_dn="org-root/org-devnet",
     name="devcore_pool"
 )
+
 HANDLE.add_mo(SERVER_POOL, modify_present=True)
 
-for blade in HANDLE.query_classid(
-    "computeBlade",
-    filter_str='(chassis_id, "7")'
-    ):
+for blade in HANDLE.query_classid("computeBlade", filter_str='(chassis_id, "7")'):
     SERVER = ComputePooledSlot(
         parent_mo_or_dn=SERVER_POOL,
         chassis_id=blade.chassis_id,
         slot_id=blade.slot_id
     )
     HANDLE.add_mo(SERVER, modify_present=True)
+
 HANDLE.commit()
 
 SP_TEMPLATE = LsRequirement(
