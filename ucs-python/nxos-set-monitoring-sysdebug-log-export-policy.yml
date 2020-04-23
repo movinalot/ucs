@@ -1,0 +1,30 @@
+---
+connection:
+  hostname: '10.200.0.10'
+  username: admin
+  password: C1sco12345
+commands:
+- command: 'scope monitoring'
+  sleep_time: 1
+- command: 'scope sysdebug'
+  sleep_time: 1
+- command: 'scope log-export-policy'
+  sleep_time: 1
+- command: 'set admin-state enabled'
+  sleep_time: 1
+- command: 'set hostname 10.10.10.10'
+  sleep_time: 1
+- command: 'set passwordless-ssh yes'
+  sleep_time: 1
+- command: 'set user root'
+  sleep_time: 1
+- command: 'set path /var/log/ucs/Lab1'
+  sleep_time: 1
+- command: 'set proto scp'
+  sleep_time: 1
+- command: 'commit-buffer'
+  sleep_time: 1
+- command: 'show detail'
+  sleep_time: 1
+- command: 'top'
+- command: 'exit'
