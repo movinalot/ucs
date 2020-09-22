@@ -17,7 +17,7 @@ commands:
 - command: 'show npv flogi-table'
   sleep_time: 5
   recv_buffer: 100000
-- command: 'show database'
+- command: 'show flogi database'
   sleep_time: 5
   recv_buffer: 100000
 - command: 'exit'
